@@ -15,11 +15,3 @@ Route::controller(EmployeeController::class)->group(function(){
     Route::get('/employee-management/Dashboard', 'show');
 });
 
-
-Route::get('/component/side-panel', function () {
-    return view('component.side-panel');
-});
-
-Route::get('/component/navbar', function () {
-    return view('component.navbar');
-});
