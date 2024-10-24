@@ -1,6 +1,3 @@
-
-
-
 <script>
     $('#login-form').on('submit', function(event) {
         event.preventDefault();
