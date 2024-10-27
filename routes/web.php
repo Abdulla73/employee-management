@@ -19,6 +19,7 @@ Route::group(['prefix'=>'employee-panel','as'=>'employee-panel.'], function(){
     // Employees
     Route::group(['prefix'=>'employees','as'=>'employees.'], function(){
         Route::get('/', [EmployeeController::class, 'index'])->name('index');
+        Route::post('/addemp', [EmployeeController::class, 'store'])->name('store');
 
     });
 

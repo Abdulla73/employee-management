@@ -1,5 +1,4 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-
 <style>
     body {
         display: flex;
@@ -18,7 +17,7 @@
     .content {
         flex-grow: 1;
         padding: 20px;
-        margin-left: 250px;
+        margin-left: 10px;
 
         @media (max-width: 768px) {
             .sidebar {
@@ -26,7 +25,7 @@
             }
 
             .content {
-                margin-left: 200px;
+                margin-left: 10px;
             }
 
         }
@@ -46,7 +45,7 @@
         padding: 10px 15px;
         text-decoration: none;
         display: block;
-        font: 100px;
+        font: 100;
         border-radius: 5px;
         transition: background-color 0.3s;
     }
@@ -67,12 +66,11 @@
         }
     }
 
-
-
     .navbar {
         background-color: #3A6073;
         border: none;
         padding: 15px 20px;
+        min-height: 70px !important;
     }
 
     .navbar-brand {
