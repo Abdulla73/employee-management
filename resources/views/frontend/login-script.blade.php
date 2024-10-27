@@ -25,9 +25,9 @@
             success: function(res) {
                 if (res.success) {
                     alert('Login successful!');
-                    $.get('/employee-management/Dashboard', function(data) {
+                    $.get('/employee-panel/dashboard', function(data) {
                         $('html').html(data);
-                        window.history.pushState({}, '', '/employee-management/Dashboard');
+                        window.history.pushState({}, '', '/employee-panel/dashboard');
                     });
                 }
             },

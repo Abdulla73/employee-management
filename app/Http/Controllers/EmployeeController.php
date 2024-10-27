@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\employee_model;
+use App\Models\employee;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
@@ -13,7 +13,9 @@ class EmployeeController extends Controller
         $query = $query ? $query : $search;
     }
 
-    public function show(){
-        return view('employee.employeeList');
+    public function index()
+    {
+        $employees = employee::all();
+        return view('employee.employes', compact('employees'));
     }
 }

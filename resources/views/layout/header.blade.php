@@ -38,6 +38,7 @@
         color: #F9F871;
         padding-top: 20px;
         height: 100%;
+        padding: 20px;
     }
 
     .sidebar a {
@@ -45,6 +46,7 @@
         padding: 10px 15px;
         text-decoration: none;
         display: block;
+        font: 100px;
         border-radius: 5px;
         transition: background-color 0.3s;
     }
