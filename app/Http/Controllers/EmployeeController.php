@@ -22,14 +22,14 @@ class EmployeeController extends Controller
     public function store(Request $request){
         $request->validate([
             'name' => 'required|max:255',
-            'email' => 'required|email|unique:contacts,email',
+            'email' => 'required|email|unique:employees,email',
             'dob' => 'required',
             'phone' => 'required|unique:employees,phone',
             'address' => 'required',
             'profile_image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        dd($request->all());
+
         $requestData = $request->all();
         if ($request->hasFile('profile_image')) {
             $image = $request->file('profile_image');
@@ -44,7 +44,7 @@ class EmployeeController extends Controller
             return response()->json($employee);
         }
 
-        return redirect()->route('employee-panel.employee.index')
+        return redirect()->route('employee.employeeList')
             ->with('success', 'Employee created successfully.');
     }
 

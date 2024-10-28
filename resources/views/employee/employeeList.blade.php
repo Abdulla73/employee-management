@@ -135,7 +135,7 @@
         <h2 class="header">Employee List</h2>
         @foreach ($employees as $employee)
             <div class="employee-card">
-                <img src="{{ asset('storage/' . $employee->profile_photo) }}" alt="Profile Photo" class="profile-photo">
+                <img src="{{ asset('storage/' . $employee->profile_image) }}" alt="Profile Photo" class="profile-photo">
                 <div class="employee-details">
                     <h3>{{ $employee->name }}</h3>
                     <p><strong>Address:</strong> {{ $employee->address }}</p>
@@ -153,9 +153,8 @@
         <div class="modal-content">
             <span class="close" id="closeModal">&times;</span>
             <h3>Add Employee</h3>
-            <form id="employeeForm">
-                @csrf
-                {{-- <input type="hidden" value="{{ csrf_token() }}" name="csrfToken"> --}}
+            <form id="employeeForm" enctype="multipart/form-data">
+                <input type="hidden" value="{{ csrf_token() }}" name="csrfToken">
                 <div class="form-group">
                     <label for="name">Name</label>
                     <input type="text" id="name" name="name" required>
@@ -177,8 +176,8 @@
                     <input type="text" id="address" name="address" required>
                 </div>
                 <div class="form-group">
-                    <label for="profile_photo">Profile Photo</label>
-                    <input type="file" id="profile_photo" name="profile_photo" required>
+                    <label for="profile_image">Profile Photo</label>
+                    <input type="file" id="profile_image" name="profile_image" required>
                 </div>
                 <button type="submit" class="editbtn">Submit</button>
             </form>
@@ -208,6 +207,10 @@
             e.preventDefault();
 
             let formData = new FormData(this);
+
+            for (var pair of formData.entries()) {
+                console.log(pair[0] + ': ' + pair[1]);
+            }
 
             $.ajax({
                 type: 'POST',
