@@ -16,7 +16,14 @@ class EmployeeController extends Controller
     public function index()
     {
         $employees = employee::all();
+        $employees = Employee::orderBy('created_at', 'desc')->get();
+
         return view('employee.employeeList', compact('employees'));
+    }
+
+    public function edit($empId) {
+        $employee = Employee::where('empId', $empId)->first();
+        return response()->json($employee);
     }
 
     public function store(Request $request){
@@ -48,8 +55,8 @@ class EmployeeController extends Controller
             ->with('success', 'Employee created successfully.');
     }
 
-    public function update(Request $request, $id){
-        $employee = employee::find($id);
+    public function update(Request $request, $empId){
+        $employee = employee::find($empId);
         if (!$employee) {
             return redirect()->route('employee-panel.employee.index')->with('error', 'employee not found.');
         }
@@ -82,5 +89,9 @@ class EmployeeController extends Controller
         if ($request->ajax()) {
             return response()->json(['success' => true, 'message' => 'employee updated successfully!']);
         }
+    }
+
+    public function create(){
+        return view('employee.createEmployee');
     }
 }

@@ -131,7 +131,7 @@
 
 @section('content')
     <div class="content">
-        <button class="addbtn" id="openCreateModal">Add Employee</button>
+        <a href="{{ route('employee-panel.employees.add-employee') }}" class="addbtn">Add Employee</a>
         <h2 class="header">Employee List</h2>
         @foreach ($employees as $employee)
             <div class="employee-card">
@@ -142,91 +142,10 @@
                     <p><strong>Phone:</strong> {{ $employee->phone }}</p>
                     <p><strong>Email:</strong> {{ $employee->email }}</p>
                     <p class="lastp"><strong>Date of Birth:</strong> {{ $employee->dob }}</p>
-                    <button class="editbtn">Edit</button>
-                    <button class="deletebtn">Delete</button>
+                    <button class="editbtn" id="editbtn" data-empid="{{ $employee->empId }}">Edit</button>
+                    <button class="deletebtn" id="deletebtn" data-empid="{{ $employee->empId }}">Delete</button>
                 </div>
             </div>
         @endforeach
     </div>
-
-    <div class="modal" id="createModal">
-        <div class="modal-content">
-            <span class="close" id="closeModal">&times;</span>
-            <h3>Add Employee</h3>
-            <form id="employeeForm" enctype="multipart/form-data">
-                <input type="hidden" value="{{ csrf_token() }}" name="csrfToken">
-                <div class="form-group">
-                    <label for="name">Name</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
-                <div class="form-group">
-                    <label for="email">Email</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
-                <div class="form-group">
-                    <label for="dob">Date of Birth</label>
-                    <input type="date" id="dob" name="dob" required>
-                </div>
-                <div class="form-group">
-                    <label for="phone">Phone</label>
-                    <input type="tel" id="phone" name="phone" required>
-                </div>
-                <div class="form-group">
-                    <label for="address">Address</label>
-                    <input type="text" id="address" name="address" required>
-                </div>
-                <div class="form-group">
-                    <label for="profile_image">Profile Photo</label>
-                    <input type="file" id="profile_image" name="profile_image" required>
-                </div>
-                <button type="submit" class="editbtn">Submit</button>
-            </form>
-        </div>
-    </div>
-@endsection
-
-@include('layout.footer')
-@section('scripts')
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script>
-        $('#openCreateModal').click(function() {
-            $('#createModal').css('display', 'flex');
-        });
-
-        $('#closeModal').click(function() {
-            $('#createModal').css('display', 'none');
-        });
-
-        $.ajaxSetup({
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        });
-
-        $('#employeeForm').submit(function(e) {
-            e.preventDefault();
-
-            let formData = new FormData(this);
-
-            for (var pair of formData.entries()) {
-                console.log(pair[0] + ': ' + pair[1]);
-            }
-
-            $.ajax({
-                type: 'POST',
-                url: '/employee-panel/employees/addemp',
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function(response) {
-                    alert('Employee added successfully!');
-                    $('#createModal').css('display', 'none');
-                    location.reload();
-                },
-                error: function(error) {
-                    alert('Error adding employee!');
-                }
-            });
-        });
-    </script>
 @endsection
