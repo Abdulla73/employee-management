@@ -20,16 +20,41 @@ class EmployeeController extends Controller
 
     public function index()
     {
-        $employees = employee::all();
-        $employees = Employee::orderBy('created_at', 'desc')->get();
+        $employees = Employee::with(['educations', 'histories'])
+        ->orderBy('created_at', 'desc')
+        ->get();
 
         return view('employee.employeeList', compact('employees'));
     }
 
-    public function edit($empId)
+    public function edit($id)
     {
-        $employee = Employee::where('empId', $empId)->first();
+        $employee = Employee::where('id', $id)->first();
         return response()->json($employee);
+    }
+
+    public function delete($id)
+    {
+        try {
+            DB::beginTransaction();
+
+            $employee = Employee::with(['educations', 'histories'])->find($id);
+
+            if (!$employee) {
+                return redirect()->back()->with('error', 'Employee not found.');
+            }
+
+            $employee->delete();
+
+            DB::commit();
+
+            return redirect()->route('employee.employeeList')->with('success', 'Employee deleted successfully.');
+
+        }
+        catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Failed to delete employee: ' . $e->getMessage());
+        }
     }
 
     // public function store(Request $request){
@@ -62,9 +87,9 @@ class EmployeeController extends Controller
     //         ->with('success', 'Employee created successfully.');
     // }
 
-    public function update(Request $request, $empId)
+    public function update(Request $request, $id)
     {
-        $employee = employee::find($empId);
+        $employee = employee::find($id);
         if (!$employee) {
             return redirect()->route('employee-panel.employee.index')->with('error', 'employee not found.');
         }
@@ -185,6 +210,18 @@ class EmployeeController extends Controller
             DB::rollBack();
             return redirect()->back()->with('error', 'Failed to save employee data: ' . $e->getMessage());
         }
+    }
+    public function details($id)
+    {
+        $employee = Employee::with(['educations', 'histories'])
+            ->where('id', $id)
+            ->first();
+
+        if (!$employee) {
+            return redirect()->back()->with('error', 'Employee not found.');
+        }
+
+        return view('employee.employeeDetails', compact('employee'));
     }
 
 }

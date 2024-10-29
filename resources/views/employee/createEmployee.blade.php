@@ -3,7 +3,6 @@
 @section('styles')
     <style>
         .form-container {
-            /* max-width: 700px; */
             margin: 50px auto;
             padding: 20px;
             background-color: #fff;
@@ -52,6 +51,15 @@
             border: 2px solid #ddd;
             border-radius: 5px;
             box-sizing: border-box;
+        }
+
+        .half-width-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .half-width {
+            width: 48%;
         }
 
         .btn-add {
@@ -113,23 +121,24 @@
                         <input type="email" id="email" name="email" required>
                     </div>
                     <div class="form-group">
-                        <label for="dob">Date of Birth</label>
-                        <input type="date" id="dob" name="dob" required>
-                    </div>
-                    <div class="form-group">
                         <label for="address">Address</label>
                         <input type="text" id="address" name="address" required>
                     </div>
-                    <div class="form-group">
-                        <label for="phone">Phone</label>
-                        <input type="text" id="phone" name="phone" required>
+                    <div class="half-width-container">
+                        <div class="form-group half-width">
+                            <label for="dob">Date of Birth</label>
+                            <input type="date" id="dob" name="dob" required>
+                        </div>
+                        <div class="form-group half-width">
+                            <label for="phone">Phone</label>
+                            <input type="text" id="phone" name="phone" required>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label for="profile_image">Profile Image</label>
                         <input type="file" id="profile_image" name="profile_image" accept="image/*" required>
                     </div>
                 </div>
-
 
                 <div class="form-section" id="education-section">
                     <h3>Education</h3>
@@ -142,18 +151,19 @@
                             <label for="institute_0">Institute</label>
                             <input type="text" id="institute_0" name="institute[]" required>
                         </div>
-                        <div class="form-group">
-                            <label for="passing_year_0">Passing Year</label>
-                            <input type="number" id="passing_year_0" name="passing_year[]" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="results_0">Results</label>
-                            <input type="text" id="results_0" name="results[]" required>
+                        <div class="half-width-container">
+                            <div class="form-group half-width">
+                                <label for="passing_year_0">Passing Year</label>
+                                <input type="number" id="passing_year_0" name="passing_year[]" required>
+                            </div>
+                            <div class="form-group half-width">
+                                <label for="results_0">Results</label>
+                                <input type="text" id="results_0" name="results[]" required>
+                            </div>
                         </div>
                     </div>
                     <button type="button" class="btn-add" id="add-education">+ Add Education</button>
                 </div>
-
 
                 <div class="form-section" id="employment-section">
                     <h3>Employment History</h3>
@@ -162,13 +172,15 @@
                             <label for="employment_institute_0">Institute</label>
                             <input type="text" id="employment_institute_0" name="employment_institute[]" required>
                         </div>
-                        <div class="form-group">
-                            <label for="serving_year_0">Serving Year</label>
-                            <input type="text" id="serving_year_0" name="serving_year[]" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="position_0">Position</label>
-                            <input type="text" id="position_0" name="position[]" required>
+                        <div class="half-width-container">
+                            <div class="form-group half-width">
+                                <label for="serving_year_0">Serving Year</label>
+                                <input type="number" id="serving_year_0" name="serving_year[]" required>
+                            </div>
+                            <div class="form-group half-width">
+                                <label for="position_0">Position</label>
+                                <input type="text" id="position_0" name="position[]" required>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="special_award_0">Special Award</label>
@@ -184,7 +196,6 @@
     </div>
 @endsection
 
-
 @section('scripts')
     <script>
         let educationCount = 1;
@@ -194,7 +205,7 @@
             const educationEntry = document.createElement('div');
             educationEntry.className = 'entry';
             educationEntry.innerHTML = `
-                <button type="button" class="btn-remove" onclick="this.parentElement.remove()">Remove</button>
+                <button type="button" class="btn-remove" onclick="this.parentElement.remove()" style="margin-bottom: 10px;">Remove</button>
                 <div class="form-group">
                     <label for="degree_${educationCount}">Degree</label>
                     <input type="text" id="degree_${educationCount}" name="degree[]" required>
@@ -203,16 +214,21 @@
                     <label for="institute_${educationCount}">Institute</label>
                     <input type="text" id="institute_${educationCount}" name="institute[]" required>
                 </div>
-                <div class="form-group">
-                    <label for="passing_year_${educationCount}">Passing Year</label>
-                    <input type="number" id="passing_year_${educationCount}" name="passing_year[]" required>
-                </div>
-                <div class="form-group">
-                    <label for="results_${educationCount}">Results</label>
-                    <input type="text" id="results_${educationCount}" name="results[]" required>
-                </div>
-            `;
-            document.getElementById('education-section').appendChild(educationEntry);
+                <div class="half-width-container">
+                    <div class="form-group half-width">
+                        <label for="passing_year_${educationCount}">Passing Year</label>
+                        <input type="number" id="passing_year_${educationCount}" name="passing_year[]" required>
+                    </div>
+                    <div class="form-group half-width">
+                        <label for="results_${educationCount}">Results</label>
+                        <input type="text" id="results_${educationCount}" name="results[]" required>
+                    </div>
+                </div>`;
+
+            const educationSection = document.getElementById('education-section');
+            educationSection.appendChild(educationEntry);
+            educationSection.appendChild(this);
+
             educationCount++;
         });
 
@@ -220,25 +236,30 @@
             const employmentEntry = document.createElement('div');
             employmentEntry.className = 'entry';
             employmentEntry.innerHTML = `
-                <button type="button" class="btn-remove" onclick="this.parentElement.remove()">Remove</button>
+                <button type="button" class="btn-remove" onclick="this.parentElement.remove()" style="margin-bottom: 10px;">Remove</button>
                 <div class="form-group">
                     <label for="employment_institute_${employmentCount}">Institute</label>
                     <input type="text" id="employment_institute_${employmentCount}" name="employment_institute[]" required>
                 </div>
-                <div class="form-group">
-                    <label for="serving_year_${employmentCount}">Serving Year</label>
-                    <input type="text" id="serving_year_${employmentCount}" name="serving_year[]" required>
-                </div>
-                <div class="form-group">
-                    <label for="position_${employmentCount}">Position</label>
-                    <input type="text" id="position_${employmentCount}" name="position[]" required>
+                <div class="half-width-container">
+                    <div class="form-group half-width">
+                        <label for="serving_year_${employmentCount}">Serving Year</label>
+                        <input type="number" id="serving_year_${employmentCount}" name="serving_year[]" required>
+                    </div>
+                    <div class="form-group half-width">
+                        <label for="position_${employmentCount}">Position</label>
+                        <input type="text" id="position_${employmentCount}" name="position[]" required>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="special_award_${employmentCount}">Special Award</label>
                     <input type="text" id="special_award_${employmentCount}" name="special_award[]">
-                </div>
-            `;
-            document.getElementById('employment-section').appendChild(employmentEntry);
+                </div>`;
+
+            const employmentSection = document.getElementById('employment-section');
+            employmentSection.appendChild(employmentEntry);
+            employmentSection.appendChild(this);
+
             employmentCount++;
         });
     </script>

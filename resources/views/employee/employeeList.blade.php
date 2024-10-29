@@ -61,6 +61,16 @@
             margin-right: 7px;
         }
 
+        .viewbtn {
+            background-color: #117fc9;
+            color: #ebf4ec;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 7px;
+        }
+
         .deletebtn {
             background-color: #c40404;
             color: #efecec;
@@ -81,6 +91,8 @@
             right: 30px;
             top: 120px;
         }
+
+
 
         .modal {
             display: none;
@@ -142,10 +154,21 @@
                     <p><strong>Phone:</strong> {{ $employee->phone }}</p>
                     <p><strong>Email:</strong> {{ $employee->email }}</p>
                     <p class="lastp"><strong>Date of Birth:</strong> {{ $employee->dob }}</p>
-                    <button class="editbtn" id="editbtn" data-empid="{{ $employee->empId }}">Edit</button>
-                    <button class="deletebtn" id="deletebtn" data-empid="{{ $employee->empId }}">Delete</button>
+                    <button class="editbtn" id="editbtn" data-empid="{{ $employee->id }}">Edit</button>
+                    <button class="deletebtn" id="deletebtn" data-empid="{{ $employee->id }}">Delete</button>
+                    <button class="viewbtn" id="viewbtn-{{ $employee->id }}" data-empid="{{ $employee->id }}"
+                        onclick="viewDetails({{ $employee->id }})">View details</button>
                 </div>
             </div>
         @endforeach
     </div>
+@endsection
+
+@section('scripts')
+    <script>
+        function viewDetails(id) {
+            const url = "{{ route('employee-panel.employees.details', ':id') }}".replace(':id', id);
+            window.location.href = url;
+        }
+    </script>
 @endsection

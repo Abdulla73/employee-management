@@ -23,6 +23,7 @@ Route::group(['prefix'=>'employee-panel','as'=>'employee-panel.'], function(){
         Route::get('/edit-data/{empId}', [EmployeeController::class, 'edit'])->name('edit');
         Route::post('/{empId}/update', [EmployeeController::class, 'update'])->name('update');
         Route::get('/add-employee', [EmployeeController::class, 'create'])->name('add-employee');
+        Route::get('/details/{id}', [EmployeeController::class, 'details'])->name('details');
     });
 
     // users
