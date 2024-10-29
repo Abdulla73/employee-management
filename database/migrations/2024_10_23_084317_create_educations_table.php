@@ -11,16 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('employee_history', function (Blueprint $table) {
+        Schema::create('educations', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('empId');
-            $table->string('institute', 50);
-            $table->integer('serving Years');
-            $table->string('position', 50);
-            $table->string('special award', 25)->nullable(true);
+            $table->string('degree', 50);
+            $table->string('institute',100);
+            $table->string('passing_year',50);
+            $table->double('result',50);
 
             $table->foreign('empId')
-            ->references('empId')->on('employee')
+            ->references('id')->on('employees')
             ->onDelete('cascade');
 
             $table->timestamps();
@@ -32,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('employee_history');
+        Schema::dropIfExists('educations');
     }
 };
