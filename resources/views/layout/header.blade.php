@@ -95,6 +95,15 @@
     .form-control::placeholder {
         color: #A9A9A9;
     }
+    .btn-search{
+        background-color: #FFEB3B;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        padding: 5px 10px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
 
     .btn-logout {
         background-color: #FF5733;

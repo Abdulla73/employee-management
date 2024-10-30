@@ -14,9 +14,12 @@ class EmployeeController extends Controller
 {
     public function search(Request $request)
     {
-        $search = $request->input("search");
-        $query = $request->input("query");
-        $query = $query ? $query : $search;
+        $query = $request->input('search');
+        $employees = Employee::when($query, function ($queryBuilder) use ($query) {
+            return $queryBuilder->where('name', 'like', "%{$query}%");
+        })->get();
+
+        return view('employee.employeeList', compact('employees'));
     }
 
     public function index()

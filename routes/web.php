@@ -25,6 +25,7 @@ Route::group(['prefix'=>'employee-panel','as'=>'employee-panel.'], function(){
         Route::get('/add-employee', [EmployeeController::class, 'create'])->name('add-employee');
         Route::get('/details/{id}', [EmployeeController::class, 'details'])->name('details');
         Route::delete('/delete/{id}', [EmployeeController::class, 'delete'])->name('delete');
+        Route::get ('/search', [EmployeeController::class,'search'])->name('search');
     });
 
     // users
