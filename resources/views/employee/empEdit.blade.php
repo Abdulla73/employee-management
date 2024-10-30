@@ -165,7 +165,7 @@
                                     </div>
                                     <div class="form-group half-width">
                                         <label for="results_{{ $employee }}">Results</label>
-                                        <input type="text" id="results_{{ $employee }}" name="result[]"
+                                        <input type="text" id="results_{{ $employee }}" name="results[]"
                                             value="{{ $education->result}}" required>
                                     </div>
                                 </div>

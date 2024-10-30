@@ -24,11 +24,7 @@
             },
             success: function(res) {
                 if (res.success) {
-                    alert('Login successful!');
-                    $.get('/employee-panel/dashboard', function(data) {
-                        $('html').html(data);
-                        window.history.pushState({}, '', '/employee-panel/dashboard');
-                    });
+                    window.location.href = '/employee-panel/dashboard';
                 }
             },
             error: function(res) {

@@ -119,6 +119,7 @@
                     <div class="form-group">
                         <label for="email">Email</label>
                         <input type="email" id="email" name="email" required>
+                        <span id="email-error" style="color: red;"></span>
                     </div>
                     <div class="form-group">
                         <label for="address">Address</label>
@@ -190,7 +191,7 @@
                     <button type="button" class="btn-add" id="add-employment">+ Add Employment</button>
                 </div>
 
-                <button type="submit" class="btn-submit">Submit</button>
+                <button type="submit" class="btn-submit .btn-submit">Submit</button>
             </form>
         </div>
     </div>
@@ -261,6 +262,39 @@
             employmentSection.appendChild(this);
 
             employmentCount++;
+        });
+
+
+        document.getElementById('email').addEventListener('input', function() {
+            const email = this.value;
+            const submitButton = document.querySelector('.btn-submit');
+            const emailError = document.getElementById('email-error');
+
+            if (email) {
+                fetch("{{ route('employee-panel.employees.check.email') }}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            email: email
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.exists) {
+                            emailError.textContent = 'Email already exists.';
+                            submitButton.disabled = true;
+                        } else {
+                            emailError.textContent = '';
+                            submitButton.disabled = false;
+                        }
+                    });
+            } else {
+                emailError.textContent = '';
+                submitButton.disabled = false;
+            }
         });
     </script>
 @endsection

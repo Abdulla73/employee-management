@@ -22,6 +22,12 @@ class EmployeeController extends Controller
         return view('employee.employeeList', compact('employees'));
     }
 
+    public function checkEmail(Request $request)
+    {
+        $emailExists = Employee::where('email', $request->email)->exists();
+        return response()->json(['exists' => $emailExists]);
+    }
+
     public function index()
     {
         $employees = Employee::with(['educations', 'histories'])
@@ -168,84 +174,85 @@ class EmployeeController extends Controller
             'results.*' => 'required',
         ]);
 
-        try {
-            DB::beginTransaction();
+        // dd($request->all());
+        // try {
+        DB::beginTransaction();
 
-            $employee = Employee::with(['educations', 'histories'])->find($id);
+        $employee = Employee::with(['educations', 'histories'])->find($id);
 
-            if (!$employee) {
-                return redirect()->back()->with('error', 'Employee not found.');
-            }
-
-            $employee->name = $request->input('name');
-            $employee->email = $request->input('email');
-            $employee->dob = $request->input('dob');
-            $employee->address = $request->input('address');
-            $employee->phone = $request->input('phone');
-
-            if ($request->hasFile('profile_image')) {
-                $image = $request->file('profile_image');
-                $imageName = time() . '.' . $image->getClientOriginalExtension();
-                $image->move(storage_path('app/public/profile_images'), $imageName);
-                $employee->profile_image = 'profile_images/' . $imageName;
-            }
-
-            $employee->save();
-
-            $exitsing_edu = $employee->educations->pluck('id')->toArray();
-            $new_edu = $request->education_ids ?? [];
-
-            foreach ($request->degree as $index => $degree) {
-                $educationData = [
-                    'degree' => $degree,
-                    'institute' => $request->institute[$index],
-                    'passing_year' => $request->passing_year[$index],
-                    'result' => $request->result[$index]
-                ];
-
-                if (isset($new_edu[$index])) {
-                    $employee->educations()->where('id', $new_edu[$index])->update($educationData);
-                } else {
-                    $employee->educations()->create($educationData);
-                }
-            }
-
-            $educationIdsToDelete = array_diff($exitsing_edu, $new_edu);
-            if (!empty($educationIdsToDelete)) {
-                $employee->educations()->whereIn('id', $educationIdsToDelete)->delete();
-            }
-
-            $existing_history = $employee->histories->pluck('id')->toArray();
-            $new_history = $request->history_ids ?? [];
-
-            foreach ($request->employment_institute as $index => $institute) {
-                $historyData = [
-                    'institute' => $institute,
-                    'serving_year' => $request->serving_year[$index],
-                    'position' => $request->position[$index],
-                    'special_award' => $request->special_award[$index] ?? null,
-                ];
-
-                if (isset($new_history[$index])) {
-                    $employee->histories()->where('id', $new_history[$index])->update($historyData);
-                } else {
-                    $employee->histories()->create($historyData);
-                }
-            }
-
-            $historyIdsToDelete = array_diff($existing_history, $new_history);
-            if (!empty($historyIdsToDelete)) {
-                $employee->histories()->whereIn('id', $historyIdsToDelete)->delete();
-            }
-
-            DB::commit();
-
-            return redirect()->back()->with('success', 'Employee data updated successfully!');
-
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return redirect()->back()->with('error', 'Failed to update employee data: ' . $e->getMessage());
+        if (!$employee) {
+            return redirect()->back()->with('error', 'Employee not found.');
         }
-    }
 
+        $employee->name = $request->input('name');
+        $employee->email = $request->input('email');
+        $employee->dob = $request->input('dob');
+        $employee->address = $request->input('address');
+        $employee->phone = $request->input('phone');
+
+        if ($request->hasFile('profile_image')) {
+            $image = $request->file('profile_image');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(storage_path('app/public/profile_images'), $imageName);
+            $employee->profile_image = 'profile_images/' . $imageName;
+        }
+
+        $employee->save();
+
+        $existingEducationIds = $employee->educations->pluck('id')->toArray();
+        $submittedEducationIds = [];
+
+        foreach ($request->degree as $index => $degree) {
+            $educationData = [
+                'degree' => $degree,
+                'institute' => $request->institute[$index],
+                'passing_year' => $request->passing_year[$index],
+                'result' => $request->results[$index]
+            ];
+
+            if (isset($existingEducationIds[$index])) {
+                $employee->educations()->where('id', $existingEducationIds[$index])->update($educationData);
+                $submittedEducationIds[] = $existingEducationIds[$index];
+            } else {
+                $employee->educations()->create($educationData);
+            }
+        }
+
+        $educationIdsToDelete = array_diff($existingEducationIds, $submittedEducationIds);
+        if (!empty($educationIdsToDelete)) {
+            $employee->educations()->whereIn('id', $educationIdsToDelete)->delete();
+        }
+
+        $existingHistoryIds = $employee->histories->pluck('id')->toArray();
+        $submittedHistoryIds = $request->history_ids ?? [];
+
+        foreach ($request->employment_institute as $index => $institute) {
+            $historyData = [
+                'institute' => $institute,
+                'serving_year' => $request->serving_year[$index],
+                'position' => $request->position[$index],
+                'special_award' => $request->special_award[$index] ?? null,
+            ];
+
+            if (isset($submittedHistoryIds[$index])) {
+                $employee->histories()->where('id', $submittedHistoryIds[$index])->update($historyData);
+            } else {
+                $employee->histories()->create($historyData);
+            }
+        }
+
+        $historyIdsToDelete = array_diff($existingHistoryIds, $submittedHistoryIds);
+        if (!empty($historyIdsToDelete)) {
+            $employee->histories()->whereIn('id', $historyIdsToDelete)->delete();
+        }
+
+        DB::commit();
+
+        return redirect()->back()->with('success', 'Employee data updated successfully!');
+
+        // } catch (\Exception $e) {
+        //     DB::rollBack();
+        //     return redirect()->back()->with('error', 'Failed to update employee data: ' . $e->getMessage());
+        // }
+    }
 }
