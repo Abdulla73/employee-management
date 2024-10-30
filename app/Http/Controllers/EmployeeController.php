@@ -152,7 +152,6 @@ class EmployeeController extends Controller
 
     public function update(Request $request, $id)
     {
-
         $request->validate([
             'name' => 'required|max:255',
             'email' => 'required|email|unique:employees,email,' . $id,
@@ -190,22 +189,31 @@ class EmployeeController extends Controller
 
             $employee->save();
 
+            $exitsing_edu = $employee->educations->pluck('id')->toArray();
+            $new_edu = $request->education_ids ?? [];
+
             foreach ($request->degree as $index => $degree) {
                 $educationData = [
                     'degree' => $degree,
                     'institute' => $request->institute[$index],
                     'passing_year' => $request->passing_year[$index],
-                    'result' => $request->results[$index]
+                    'result' => $request->result[$index]
                 ];
 
-                if (isset($request->education_ids[$index])) {
-
-                    $employee->educations()->where('id', $request->education_ids[$index])->update($educationData);
+                if (isset($new_edu[$index])) {
+                    $employee->educations()->where('id', $new_edu[$index])->update($educationData);
                 } else {
-
                     $employee->educations()->create($educationData);
                 }
             }
+
+            $educationIdsToDelete = array_diff($exitsing_edu, $new_edu);
+            if (!empty($educationIdsToDelete)) {
+                $employee->educations()->whereIn('id', $educationIdsToDelete)->delete();
+            }
+
+            $existing_history = $employee->histories->pluck('id')->toArray();
+            $new_history = $request->history_ids ?? [];
 
             foreach ($request->employment_institute as $index => $institute) {
                 $historyData = [
@@ -215,13 +223,16 @@ class EmployeeController extends Controller
                     'special_award' => $request->special_award[$index] ?? null,
                 ];
 
-                if (isset($request->history_ids[$index])) {
-
-                    $employee->histories()->where('id', $request->history_ids[$index])->update($historyData);
+                if (isset($new_history[$index])) {
+                    $employee->histories()->where('id', $new_history[$index])->update($historyData);
                 } else {
-
                     $employee->histories()->create($historyData);
                 }
+            }
+
+            $historyIdsToDelete = array_diff($existing_history, $new_history);
+            if (!empty($historyIdsToDelete)) {
+                $employee->histories()->whereIn('id', $historyIdsToDelete)->delete();
             }
 
             DB::commit();
