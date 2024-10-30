@@ -18,13 +18,13 @@
         }
 
         .profile-image {
-            width: 120px;
-            height: 120px;
+            width: 150px;
+            height: 165px;
             object-fit: cover;
-            border-radius: 8px;
+            /* border-radius: 8px; */
             border: 2px solid #2c3e50;
             margin-bottom: 15px;
-            padding: 10px;
+            /* padding: 10px; */
             margin-top: 20px;
 
         }
@@ -56,14 +56,16 @@
         .eduhader {
             width: 100%;
             color: #fff;
-            text-align: center;
-            padding: 10px;
-            margin-bottom: 10px;
+            text-align: left;
+            /* padding: 10px; */
+            /* margin-bottom: 2px; */
+            padding-top: 10px;
+            margin-left: 16px;
         }
 
         .edu-details {
             width: 100%;
-            margin: 10px;
+            margin: 2px;
             padding: 10px;
             background-color: #f9f9f9;
         }
@@ -117,7 +119,7 @@
         </div>
         <div class="education">
             <div class="eduhader">
-                <h2>Education</h2>
+                <h3>Education</h3>
             </div>
             <div class="edu-details">
                 @if ($employee->educations && $employee->educations->isNotEmpty())
@@ -148,7 +150,7 @@
         </div>
         <div class="education history">
             <div class="eduhader hisheader">
-                <h2>Employment History</h2>
+                <h3>Employment History</h3>
             </div>
             <div class="edu-details histable">
                 @if ($employee->histories && $employee->histories->isNotEmpty())
