@@ -1,6 +1,11 @@
-@extends('layout.app')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Pdf view</title>
 
-@section('styles')
     <style>
         body {
             background-color: #ffffff;
@@ -21,12 +26,9 @@
             width: 150px;
             height: 165px;
             object-fit: cover;
-            /* border-radius: 8px; */
             border: 2px solid #2c3e50;
             margin-bottom: 15px;
-            /* padding: 10px; */
             margin-top: 20px;
-
         }
 
         .basic {
@@ -98,29 +100,11 @@
         tr:hover {
             background-color: #e0e0e0;
         }
-
-        .pdf {
-            width: 100%;
-            margin-left: 15px;
-            text-align: right
-        }
-
-        .btn-pdf {
-            background-color: #4facfe;
-            color: #fff;
-            border-radius: 20px;
-            padding: 10px 10px;
-            width: 15%;
-            margin-bottom: 10px;
-        }
     </style>
-@endsection
-
-@section('content')
+</head>
+<body>
     <div class="cv-container">
-        <div class="pdf">
-            <button class="btn-pdf" onclick="download({{ $employee->id }})" data-empid="{{ $employee->id }}">Download pdf</button>
-        </div>
+
         <div class="basic">
             <div class="basicinfo">
                 <h1>{{ $employee->name }}</h1>
@@ -197,13 +181,5 @@
         </div>
     </div>
 
-@section('scripts')
-    <script>
-        function download(id) {
-            console.log(id);
-            const url = "{{ route('employee-panel.employees.download.pdf', ':id') }}".replace(':id', id);
-            window.location.href = url;
-        }
-    </script>
-@endsection
-@endsection
+</body>
+</html>

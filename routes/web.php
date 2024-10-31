@@ -27,6 +27,8 @@ Route::group(['prefix'=>'employee-panel','as'=>'employee-panel.'], function(){
         Route::delete('/delete/{id}', [EmployeeController::class, 'delete'])->name('delete');
         Route::get ('/search', [EmployeeController::class,'search'])->name('search');
         Route::post('/check-email', [EmployeeController::class, 'checkEmail'])->name('check.email');
+        Route::get('/download-pdf/{id}', [EmployeeController::class, 'downloadPDF'])->name('download.pdf');
+       Route::get('/pdfview/{id}', [EmployeeController::class, 'pdfview'])->name('pdfview');
     });
 
     // users

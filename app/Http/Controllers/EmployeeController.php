@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Education;
 use App\Models\employee;
 use App\Models\History;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -20,6 +21,15 @@ class EmployeeController extends Controller
         })->get();
 
         return view('employee.employeeList', compact('employees'));
+    }
+
+    public function downloadPDF($id) {
+        $employee = Employee::with(['educations', 'histories'])
+            ->where('id', $id)
+            ->first();
+
+        $pdf = Pdf::loadView('employee.employeePdf', compact('employee'));
+        return $pdf->download('employee_details.pdf');
     }
 
     public function checkEmail(Request $request)
@@ -175,7 +185,7 @@ class EmployeeController extends Controller
         ]);
 
         // dd($request->all());
-        // try {
+        try {
         DB::beginTransaction();
 
         $employee = Employee::with(['educations', 'histories'])->find($id);
@@ -250,9 +260,18 @@ class EmployeeController extends Controller
 
         return redirect()->back()->with('success', 'Employee data updated successfully!');
 
-        // } catch (\Exception $e) {
-        //     DB::rollBack();
-        //     return redirect()->back()->with('error', 'Failed to update employee data: ' . $e->getMessage());
-        // }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Failed to update employee data: ' . $e->getMessage());
+        }
+    }
+
+    public function pdfview($id){
+        $employee = Employee::with(['educations', 'histories'])
+        ->where('id', $id)
+        ->first();
+
+
+        return view('employee.employeePdf', compact('employee'));
     }
 }
