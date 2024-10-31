@@ -286,9 +286,11 @@
                         if (data.exists) {
                             emailError.textContent = 'Email already exists.';
                             submitButton.disabled = true;
+                            submitButton.style.backgroundColor = '#ddd';
                         } else {
                             emailError.textContent = '';
                             submitButton.disabled = false;
+                            submitButton.style.backgroundColor = '#007bff';
                         }
                     });
             } else {

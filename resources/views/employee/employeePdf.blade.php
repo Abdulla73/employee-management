@@ -7,37 +7,37 @@
     <title>Pdf view</title>
 
     <style>
+        @page {
+            margin: 0;
+        }
+
         body {
             background-color: #ffffff;
+            font-size: 11pt;
+            padding: 50.402pt 56.693pt 99.213pt 53.858pt;
+            margin: 0;
+        }
+
+        .basic{
+            width: 100%;
+            overflow: auto;
         }
 
         .cv-container {
             width: 100%;
             margin: auto;
             padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            background-color: #fbfbfb;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
             text-align: center;
         }
 
         .profile-image {
-            width: 150px;
-            height: 165px;
+            width: 130px;
+            height: 145px;
             object-fit: cover;
             border: 2px solid #2c3e50;
             margin-bottom: 15px;
             margin-top: 20px;
-        }
-
-        .basic {
-            width: 100%;
-            padding: 10px;
-            margin: 10px;
-            overflow: auto;
-            background-color: #a4d9f2;
-            border-radius: 10px;
+            float: right;
         }
 
         .basicinfo {
@@ -51,23 +51,10 @@
             float: right;
         }
 
-        .education {
-            width: 100%;
-        }
-
         .eduhader {
             width: 100%;
-            color: #fff;
+            color: #333;
             text-align: left;
-            padding-top: 10px;
-            margin-left: 16px;
-        }
-
-        .edu-details {
-            width: 100%;
-            margin: 2px;
-            padding: 10px;
-            background-color: #f9f9f9;
         }
 
         table {
@@ -96,10 +83,6 @@
         tr:nth-child(even) {
             background-color: #82a9c9;
         }
-
-        tr:hover {
-            background-color: #e0e0e0;
-        }
     </style>
 </head>
 <body>
@@ -108,18 +91,22 @@
         <div class="basic">
             <div class="basicinfo">
                 <h1>{{ $employee->name }}</h1>
-                <p><strong>Email:</strong> {{ $employee->email }}</p>
-                <p><strong>Date of Birth:</strong> {{ $employee->dob }}</p>
-                <p><strong>Phone:</strong> {{ $employee->phone }}</p>
-                <p><strong>Address:</strong> {{ $employee->address }}</p>
+                <div style="line-height: 2">
+                    <span><b>Email:</b> {{ $employee->email }}</span><br>
+                    <span><b>Date of Birth:</b> {{ $employee->dob }}</span><br>
+                    <span><b>Phone:</b> {{ $employee->phone }}</span><br>
+                    <span><b>Address:</b> {{ $employee->address }}</span>
+                </div>
+
             </div>
             <div class="profileimg">
-                <img src="{{ asset('storage/' . $employee->profile_image) }}" alt="Profile Image" class="profile-image">
+                <img src="{{ public_path("storage/" . $employee->profile_image) }}" alt="Profile Image" class="profile-image">
             </div>
         </div>
-        <div class="education">
+
+        <div style="margin: 200px 0px 0px 0px">
             <div class="eduhader">
-                <h3>Education</h3>
+                <h3 >Education</h3>
             </div>
             <div class="edu-details">
                 @if ($employee->educations && $employee->educations->isNotEmpty())
@@ -148,8 +135,8 @@
                 @endif
             </div>
         </div>
-        <div class="education history">
-            <div class="eduhader hisheader">
+        <div class="history">
+            <div class="eduhader">
                 <h3>Employment History</h3>
             </div>
             <div class="edu-details histable">

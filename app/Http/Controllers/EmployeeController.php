@@ -28,8 +28,11 @@ class EmployeeController extends Controller
             ->where('id', $id)
             ->first();
 
+            Log::info('Employee Data:', $employee->toArray());
+
         $pdf = Pdf::loadView('employee.employeePdf', compact('employee'));
-        return $pdf->download('employee_details.pdf');
+        return $pdf->stream('employee_details.pdf');
+        // return $pdf->download('employee_details.pdf');
     }
 
     public function checkEmail(Request $request)
