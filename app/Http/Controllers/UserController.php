@@ -64,7 +64,7 @@ class UserController extends Controller
 
     public function allUsers()
     {
-        $users = User::orderBy('created_at', 'desc')->simplePaginate(8);
+        $users = User::orderBy('created_at', 'desc')->simplePaginate(5);
         return view('user.users', compact('users'));
     }
 

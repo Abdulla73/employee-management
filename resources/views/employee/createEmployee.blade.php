@@ -62,6 +62,19 @@
             width: 48%;
         }
 
+        .date-field {
+            width: 60%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: center;
+            margin-left: 10px;
+        }
+
         .btn-add {
             background-color: #28a745;
             color: #fff;
@@ -174,14 +187,23 @@
                             <input type="text" id="employment_institute_0" name="employment_institute[]" required>
                         </div>
                         <div class="half-width-container">
-                            <div class="form-group half-width">
-                                <label for="serving_year_0">Serving Year</label>
-                                <input type="number" id="serving_year_0" name="serving_year[]" required>
+                            <div class="form-group" style="width: 45%;">
+                                <label for="start_date_0">Start Date</label>
+                                <input type="date" class="date-field" id="start_date_0" name="start_date[]" required>
                             </div>
-                            <div class="form-group half-width">
-                                <label for="position_0">Position</label>
-                                <input type="text" id="position_0" name="position[]" required>
+                            <div class="form-group" style="width: 45%; ">
+                                <label for="end_date_0" style="margin-right: 5px;">End Date</label>
+                                <input type="date" class="date-field" id="end_date_0" name="end_date[]" required>
+                                <div class="checkbox-container">
+                                    <input type="checkbox" id="currently_working_0" name="currently_working_0"
+                                           onclick="toggleEndDate(this, 'end_date_0')" style="margin-right: 5px;">
+                                    <label for="currently_working_0" style="margin-top: 5px;">Currently Working</label>
+                                </div>
                             </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="position_0">Position</label>
+                            <input type="text" id="position_0" name="position[]" required>
                         </div>
                         <div class="form-group">
                             <label for="special_award_0">Special Award</label>
@@ -191,7 +213,7 @@
                     <button type="button" class="btn-add" id="add-employment">+ Add Employment</button>
                 </div>
 
-                <button type="submit" class="btn-submit .btn-submit">Submit</button>
+                <button type="submit" class="btn-submit">Submit</button>
             </form>
         </div>
     </div>
@@ -224,12 +246,9 @@
                         <label for="results_${educationCount}">Results</label>
                         <input type="text" id="results_${educationCount}" name="results[]" required>
                     </div>
-                </div>`;
-
-            const educationSection = document.getElementById('education-section');
-            educationSection.appendChild(educationEntry);
-            educationSection.appendChild(this);
-
+                </div>
+            `;
+            document.getElementById('education-section').appendChild(educationEntry);
             educationCount++;
         });
 
@@ -244,59 +263,40 @@
                 </div>
                 <div class="half-width-container">
                     <div class="form-group half-width">
-                        <label for="serving_year_${employmentCount}">Serving Year</label>
-                        <input type="number" id="serving_year_${employmentCount}" name="serving_year[]" required>
+                        <label for="start_date_${employmentCount}">Start Date</label>
+                        <input type="date" class="date-field" id="start_date_${employmentCount}" name="start_date[]" required>
                     </div>
-                    <div class="form-group half-width">
-                        <label for="position_${employmentCount}">Position</label>
-                        <input type="text" id="position_${employmentCount}" name="position[]" required>
+                    <div class="form-group half-width" style="display: flex; align-items: center;">
+                        <label for="end_date_${employmentCount}" style="margin-right: 5px;">End Date</label>
+                        <input type="date" class="date-field" id="end_date_${employmentCount}" name="end_date[]" required>
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="currently_working_${employmentCount}" name="currently_working_${employmentCount}"
+                                   onclick="toggleEndDate(this, 'end_date_${employmentCount}')">
+                            <label for="currently_working_${employmentCount}" style="margin-left: 5px;">Currently Working</label>
+                        </div>
                     </div>
+                </div>
+                <div class="form-group">
+                    <label for="position_${employmentCount}">Position</label>
+                    <input type="text" id="position_${employmentCount}" name="position[]" required>
                 </div>
                 <div class="form-group">
                     <label for="special_award_${employmentCount}">Special Award</label>
                     <input type="text" id="special_award_${employmentCount}" name="special_award[]">
-                </div>`;
-
-            const employmentSection = document.getElementById('employment-section');
-            employmentSection.appendChild(employmentEntry);
-            employmentSection.appendChild(this);
-
+                </div>
+            `;
+            document.getElementById('employment-section').appendChild(employmentEntry);
             employmentCount++;
         });
 
-
-        document.getElementById('email').addEventListener('input', function() {
-            const email = this.value;
-            const submitButton = document.querySelector('.btn-submit');
-            const emailError = document.getElementById('email-error');
-
-            if (email) {
-                fetch("{{ route('employee-panel.employees.check.email') }}", {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: JSON.stringify({
-                            email: email
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.exists) {
-                            emailError.textContent = 'Email already exists.';
-                            submitButton.disabled = true;
-                            submitButton.style.backgroundColor = '#ddd';
-                        } else {
-                            emailError.textContent = '';
-                            submitButton.disabled = false;
-                            submitButton.style.backgroundColor = '#007bff';
-                        }
-                    });
+        function toggleEndDate(checkbox, endDateId) {
+            const endDateField = document.getElementById(endDateId);
+            if (checkbox.checked) {
+                endDateField.value = '';
+                endDateField.disabled = true;
             } else {
-                emailError.textContent = '';
-                submitButton.disabled = false;
+                endDateField.disabled = false;
             }
-        });
+        }
     </script>
 @endsection
