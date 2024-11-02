@@ -61,11 +61,40 @@
             width: 100%;
         }
     }
+    .add-user{
+        margin-bottom: 10px;
+        text-align: right;
+        width: 100%;
+    }
+    .btn-add-user{
+        background-color: #4facfe;
+        color: #fff;
+        border-radius: 30px;
+        padding: 10px 20px;
+        margin-bottom: 10px;
+        margin-right: 10px;
+        float: right;
+    }
+    .btn-edit, .btn-delete {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 5px 10px;
+        margin: 0 5px;
+        cursor: pointer;
+    }
+    .btn-delete {
+        background-color: #dc3545;
+    }
 </style>
 @endsection
 
 @section('content')
     <div class="content">
+        <div class="add-user">
+            <button class="btn-add-user" onclick="add_user()">+Add user</button>
+        </div>
        <div class="header">
         <h1>User List</h1>
        </div>
@@ -76,6 +105,7 @@
                     <th>#</th>
                     <th onclick="sortTable(1)">Name</th>
                     <th onclick="sortTable(2)">Email</th>
+                    <th>Controls</th>
                 </tr>
             </thead>
             <tbody>
@@ -84,10 +114,23 @@
                         <td>{{ $key + 1 }}</td>
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
+                        <td>
+                            <button class="btn-edit">Edit</button>
+                            <button class="btn-delete">Delete</button>
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
        </div>
     </div>
+
+    @section('scripts')
+    <script>
+         function add_user() {
+            const url = "{{ route('employee-panel.users.add-user') }}"
+            window.location.href = url;
+        }
+    </script>
+    @endsection
 @endsection

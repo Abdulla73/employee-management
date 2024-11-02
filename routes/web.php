@@ -35,6 +35,10 @@ Route::group(['prefix'=>'employee-panel','as'=>'employee-panel.'], function(){
     Route::group(['prefix'=>'users','as'=>'users.'], function(){
         Route::get('/', [UserController::class, 'index'])->name('index');
        Route::get('/all-users', [UserController::class, 'allUsers'])->name('all-users');
+       Route::get('/add-user', [UserController::class, 'create'])->name('add-user');
+       Route::post('/store-user', [UserController::class,'storeUser'])->name('store.user');
+       Route::post('/check-email', [UserController::class, 'checkEmail'])->name('check.email');
+
 
     });
 
