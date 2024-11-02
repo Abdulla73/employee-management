@@ -64,7 +64,7 @@ class UserController extends Controller
 
     public function allUsers()
     {
-        $users = User::orderBy('created_at', 'desc')->get();
+        $users = User::orderBy('created_at', 'desc')->simplePaginate(8);
         return view('user.users', compact('users'));
     }
 
@@ -134,7 +134,7 @@ class UserController extends Controller
             $user->password = bcrypt($request->password);
         }
 
-        $user->save();
+        $user->update();
 
         return redirect()->route('employee-panel.users.all-users')->with('success', 'User updated successfully!');
     }
