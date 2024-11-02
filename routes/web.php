@@ -39,8 +39,8 @@ Route::group(['prefix'=>'employee-panel','as'=>'employee-panel.'], function(){
        Route::post('/store-user', [UserController::class,'storeUser'])->name('store.user');
        Route::post('/check-email', [UserController::class, 'checkEmail'])->name('check.email');
        Route::delete('/user/delete/{id}', [UserController::class, 'deleteUser'])->name('delete.user');
-
-
+       Route::get('edit/user/{id}', [UserController::class,'edit_user'])->name('edit.user');
+       Route::put('update/user/{id}', [UserController::class,'update_user'])->name('update.user');
     });
 
     //attendance

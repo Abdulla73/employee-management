@@ -137,7 +137,8 @@
         }
 
         function edit_user(id) {
-            console.log('Edit user with ID:', id);
+            const url = "{{ route('employee-panel.users.edit.user', ':id') }}".replace(':id', id);
+            window.location.href = url;
         }
 
     </script>

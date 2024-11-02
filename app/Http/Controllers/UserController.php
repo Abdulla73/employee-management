@@ -86,8 +86,7 @@ class UserController extends Controller
         $user = User::create($request->all());
         if ($user) {
             return redirect()->route('employee-panel.users.all-users')->with('success', 'User added successfully!');
-        }
-        else {
+        } else {
             return redirect()->route('user.add-user')->with('error', 'Failed to add user');
         }
     }
@@ -98,16 +97,46 @@ class UserController extends Controller
         return response()->json(['exists' => $emailExists]);
     }
 
-    function deleteUser($id){
+    function deleteUser($id)
+    {
         $user = User::find($id);
-        if($user){
+        if ($user) {
             $user->delete();
-            return redirect()->route('user.users')->with('success', 'User deleted successfully!');
-        }
-        else{
+            return redirect()->route('employee-panel.users.all-users')->with('success', 'User deleted successfully!');
+        } else {
             return redirect()->route('user.users')->with('error', 'Failed to delete user');
         }
     }
 
+    function edit_user($id)
+    {
+        $user = User::findOrFail($id);
+        if ($user) {
+            return view('user.edit-user', compact('user'));
+        } else {
+            return redirect()->route('user.users')->with('error', 'User not found');
+        }
+    }
+    public function update_user(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|max:40',
+            'email' => 'email|required|unique:users,email,' . $id,
+            'password' => 'nullable|min:8',
+            'confirm-password' => 'nullable|same:password',
+        ]);
+
+        $user = User::findOrFail($id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        if ($request->filled('password')) {
+            $user->password = bcrypt($request->password);
+        }
+
+        $user->save();
+
+        return redirect()->route('employee-panel.users.all-users')->with('success', 'User updated successfully!');
+    }
 
 }
