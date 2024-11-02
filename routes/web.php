@@ -34,6 +34,7 @@ Route::group(['prefix'=>'employee-panel','as'=>'employee-panel.'], function(){
     // users
     Route::group(['prefix'=>'users','as'=>'users.'], function(){
         Route::get('/', [UserController::class, 'index'])->name('index');
+       Route::get('/all-users', [UserController::class, 'allUsers'])->name('all-users');
 
     });
 

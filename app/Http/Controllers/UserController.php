@@ -58,5 +58,10 @@ class UserController extends Controller
         return view('user.users');
     }
 
+    public function allUsers() {
+        $users = User::orderBy('created_at', 'desc')->get();
+        return view('user.users', compact('users'));
+    }
+
 
 }
