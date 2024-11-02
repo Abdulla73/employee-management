@@ -103,8 +103,8 @@
             <thead>
                 <tr>
                     <th>#</th>
-                    <th onclick="sortTable(1)">Name</th>
-                    <th onclick="sortTable(2)">Email</th>
+                    <th>Name</th>
+                    <th>Email</th>
                     <th>Controls</th>
                 </tr>
             </thead>
@@ -115,8 +115,12 @@
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
                         <td>
-                            <button class="btn-edit">Edit</button>
-                            <button class="btn-delete">Delete</button>
+                            <button class="btn-edit" data-id="{{ $user->id }}" onclick="edit_user({{ $user->id }})">Edit</button>
+                            <form action="{{ route('employee-panel.users.delete.user', $user->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn-delete" data-id="{{ $user->id }}"  onclick="del_user({{ $user->id }})">Delete</button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach
@@ -131,6 +135,11 @@
             const url = "{{ route('employee-panel.users.add-user') }}"
             window.location.href = url;
         }
+
+        function edit_user(id) {
+            console.log('Edit user with ID:', id);
+        }
+
     </script>
     @endsection
 @endsection

@@ -85,10 +85,10 @@ class UserController extends Controller
 
         $user = User::create($request->all());
         if ($user) {
-            return redirect()->route('user.users')->with('success', 'User added successfully!');
+            return redirect()->route('employee-panel.users.all-users')->with('success', 'User added successfully!');
         }
         else {
-            return redirect()->route('users.add-user')->with('error', 'Failed to add user');
+            return redirect()->route('user.add-user')->with('error', 'Failed to add user');
         }
     }
 
@@ -96,6 +96,17 @@ class UserController extends Controller
     {
         $emailExists = User::where('email', $request->email)->exists();
         return response()->json(['exists' => $emailExists]);
+    }
+
+    function deleteUser($id){
+        $user = User::find($id);
+        if($user){
+            $user->delete();
+            return redirect()->route('user.users')->with('success', 'User deleted successfully!');
+        }
+        else{
+            return redirect()->route('user.users')->with('error', 'Failed to delete user');
+        }
     }
 
 

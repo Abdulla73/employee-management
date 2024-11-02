@@ -38,6 +38,7 @@ Route::group(['prefix'=>'employee-panel','as'=>'employee-panel.'], function(){
        Route::get('/add-user', [UserController::class, 'create'])->name('add-user');
        Route::post('/store-user', [UserController::class,'storeUser'])->name('store.user');
        Route::post('/check-email', [UserController::class, 'checkEmail'])->name('check.email');
+       Route::delete('/user/delete/{id}', [UserController::class, 'deleteUser'])->name('delete.user');
 
 
     });
