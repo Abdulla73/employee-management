@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,7 +19,7 @@
             margin: 0;
         }
 
-        .basic{
+        .basic {
             width: 100%;
             overflow: auto;
         }
@@ -85,9 +86,12 @@
         }
     </style>
 </head>
+
 <body>
     <div class="cv-container">
-
+        @php
+            use Carbon\Carbon;
+        @endphp
         <div class="basic">
             <div class="basicinfo">
                 <h1>{{ $employee->name }}</h1>
@@ -100,13 +104,14 @@
 
             </div>
             <div class="profileimg">
-                <img src="{{ public_path("storage/" . $employee->profile_image) }}" alt="Profile Image" class="profile-image">
+                <img src="{{ public_path('storage/' . $employee->profile_image) }}" alt="Profile Image"
+                    class="profile-image">
             </div>
         </div>
 
         <div style="margin: 200px 0px 0px 0px">
             <div class="eduhader">
-                <h3 >Education</h3>
+                <h3>Education</h3>
             </div>
             <div class="edu-details">
                 @if ($employee->educations && $employee->educations->isNotEmpty())
@@ -155,7 +160,16 @@
                                 <tr>
                                     <td>{{ $history->institute }}</td>
                                     <td>{{ $history->position }}</td>
-                                    <td>{{ $history->serving_year }}</td>
+                                    <td>
+                                        @php
+                                            $start = Carbon::parse($history->start_date);
+                                            $end = $history->end_date
+                                                ? Carbon::parse($history->end_date)
+                                                : Carbon::now();
+                                            $duration = $start->diffInDays($end);
+                                        @endphp
+                                        {{ $history->end_date ? $duration . ' Days' : 'Currently Working' }}
+                                    </td>
                                     <td>{{ $history->special_award ?? 'None' }}</td>
                                 </tr>
                             @endforeach
@@ -169,4 +183,5 @@
     </div>
 
 </body>
+
 </html>

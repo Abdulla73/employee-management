@@ -184,12 +184,12 @@ class EmployeeController extends Controller
             'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'degree.*' => 'required',
             'institute.*' => 'required',
-            'passing_year.*' => 'required',
+            'start_date.*' => 'required|date',
             'results.*' => 'required',
         ]);
 
         // dd($request->all());
-        try {
+        //try {
             DB::beginTransaction();
 
             $employee = Employee::with(['educations', 'histories'])->find($id);
@@ -212,6 +212,7 @@ class EmployeeController extends Controller
             }
 
             $employee->save();
+            // dd('aaaaa');
 
             $existingEducationIds = $employee->educations->pluck('id')->toArray();
             $submittedEducationIds = [];
@@ -243,7 +244,8 @@ class EmployeeController extends Controller
             foreach ($request->employment_institute as $index => $institute) {
                 $historyData = [
                     'institute' => $institute,
-                    'serving_year' => $request->serving_year[$index],
+                    'start_date' => $request->start_date[$index],
+                    'end_date' => $request->end_date[$index] ?? null,
                     'position' => $request->position[$index],
                     'special_award' => $request->special_award[$index] ?? null,
                 ];
@@ -264,10 +266,10 @@ class EmployeeController extends Controller
 
             return redirect()->back()->with('success', 'Employee data updated successfully!');
 
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return redirect()->back()->with('error', 'Failed to update employee data: ' . $e->getMessage());
-        }
+        // } catch (\Exception $e) {
+        //     DB::rollBack();
+        //     return redirect()->back()->with('error', 'Failed to update employee data: ' . $e->getMessage());
+        // }
     }
 
     public function pdfview($id)

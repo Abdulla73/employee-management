@@ -21,12 +21,9 @@
             width: 150px;
             height: 165px;
             object-fit: cover;
-            /* border-radius: 8px; */
             border: 2px solid #2c3e50;
             margin-bottom: 15px;
-            /* padding: 10px; */
             margin-top: 20px;
-
         }
 
         .basic {
@@ -49,11 +46,11 @@
             float: right;
         }
 
-        .education {
+        .education, .history {
             width: 100%;
         }
 
-        .eduhader {
+        .eduhader, .hisheader {
             width: 100%;
             color: #fff;
             text-align: left;
@@ -61,7 +58,7 @@
             margin-left: 16px;
         }
 
-        .edu-details {
+        .edu-details, .histable {
             width: 100%;
             margin: 2px;
             padding: 10px;
@@ -75,8 +72,7 @@
             margin-bottom: 20px;
         }
 
-        th,
-        td {
+        th, td {
             border: 1px solid #20a9e9;
             padding: 8px;
             text-align: center;
@@ -102,7 +98,7 @@
         .pdf {
             width: 100%;
             margin-left: 15px;
-            text-align: right
+            text-align: right;
         }
 
         .btn-pdf {
@@ -117,6 +113,10 @@
 @endsection
 
 @section('content')
+    @php
+        use Carbon\Carbon;
+    @endphp
+
     <div class="cv-container">
         <div class="pdf">
             <button class="btn-pdf" onclick="download({{ $employee->id }})" data-empid="{{ $employee->id }}">Download pdf</button>
@@ -164,11 +164,11 @@
                 @endif
             </div>
         </div>
-        <div class="education history">
-            <div class="eduhader hisheader">
+        <div class="history">
+            <div class="hisheader">
                 <h3>Employment History</h3>
             </div>
-            <div class="edu-details histable">
+            <div class="histable">
                 @if ($employee->histories && $employee->histories->isNotEmpty())
                     <table>
                         <thead>
@@ -184,7 +184,14 @@
                                 <tr>
                                     <td>{{ $history->institute }}</td>
                                     <td>{{ $history->position }}</td>
-                                    <td>{{ $history->serving_year }}</td>
+                                    <td>
+                                        @php
+                                            $start = Carbon::parse($history->start_date);
+                                            $end = $history->end_date ? Carbon::parse($history->end_date) : Carbon::now();
+                                            $duration = $start->diffInDays($end);
+                                        @endphp
+                                        {{ $history->end_date ? $duration . ' Days' : 'Currently Working' }}
+                                    </td>
                                     <td>{{ $history->special_award ?? 'None' }}</td>
                                 </tr>
                             @endforeach
