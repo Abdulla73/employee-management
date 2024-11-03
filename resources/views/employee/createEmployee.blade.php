@@ -266,13 +266,14 @@
                         <label for="start_date_${employmentCount}">Start Date</label>
                         <input type="date" class="date-field" id="start_date_${employmentCount}" name="start_date[]" required>
                     </div>
-                    <div class="form-group half-width" style="display: flex; align-items: center;">
+                    <div class="form-group half-width" style="width: 45%;">
                         <label for="end_date_${employmentCount}" style="margin-right: 5px;">End Date</label>
-                        <input type="date" class="date-field" id="end_date_${employmentCount}" name="end_date[]" required>
+                        <input type="date" class="date-field" style="margin-bottom: 10px;" id="end_date_${employmentCount}" name="end_date[]" required>
+
                         <div class="checkbox-container">
-                            <input type="checkbox" id="currently_working_${employmentCount}" name="currently_working_${employmentCount}"
+                            <input type="checkbox" id="currently_working_${employmentCount}" style="margin-right: 5px;" name="currently_working_${employmentCount}"
                                    onclick="toggleEndDate(this, 'end_date_${employmentCount}')">
-                            <label for="currently_working_${employmentCount}" style="margin-left: 5px;">Currently Working</label>
+                            <label for="currently_working_${employmentCount}" style="margin-left: 3px;">Currently Working</label>
                         </div>
                     </div>
                 </div>
