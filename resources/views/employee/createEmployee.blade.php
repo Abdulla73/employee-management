@@ -193,10 +193,10 @@
                             </div>
                             <div class="form-group" style="width: 45%; ">
                                 <label for="end_date_0" style="margin-right: 5px;">End Date</label>
-                                <input type="date" class="date-field" id="end_date_0" name="end_date[]" >
+                                <input type="date" class="date-field" id="end_date_0" name="end_date[]">
                                 <div class="checkbox-container">
                                     <input type="checkbox" id="currently_working_0" name="currently_working_0"
-                                           onclick="toggleEndDate(this, 'end_date_0')" style="margin-right: 5px;">
+                                        onclick="toggleEndDate(this, 'end_date_0')" style="margin-right: 5px;">
                                     <label for="currently_working_0" style="margin-top: 5px;">Currently Working</label>
                                 </div>
                             </div>
@@ -294,6 +294,7 @@
             if (checkbox.checked) {
                 endDateField.value = '';
                 endDateField.disabled = true;
+                endDateField.style.backgroundColor = '#020203';
             } else {
                 endDateField.disabled = false;
             }
@@ -306,27 +307,29 @@
 
             if (email.length > 0) {
                 fetch("{{ route('employee-panel.employees.check.email') }}", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({ email: email })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.exists) {
-                        emailError.textContent = "Email is already in use!";
-                        submitBtn.disabled = true;
-                        submitBtn.style.backgroundColor = '#fff';
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            email: email
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.exists) {
+                            emailError.textContent = "Email is already in use!";
+                            submitBtn.disabled = true;
+                            submitBtn.style.backgroundColor = '#fff';
 
-                    } else {
-                        emailError.textContent = "";
-                        submitBtn.disabled = false;
-                        submitBtn.style.backgroundColor = '#007bff';
-                    }
-                })
-                .catch(error => console.error('Error:', error));
+                        } else {
+                            emailError.textContent = "";
+                            submitBtn.disabled = false;
+                            submitBtn.style.backgroundColor = '#007bff';
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
             }
         });
     </script>

@@ -104,7 +104,7 @@ class EmployeeController extends Controller
 
         ]);
 
-        // try {
+        try {
             DB::beginTransaction();
             $employee = new Employee();
             $employee->name = $request->input('name');
@@ -147,24 +147,16 @@ class EmployeeController extends Controller
 
             }
 
-            // $allData = [
-            //     'educations' => $educations,
-            //     'histories' => $histories
-            // ];
-
-            // // Dump all data
-            // dd($allData);
-
             $employee->histories()->createMany($histories);
 
             DB::commit();
 
             return redirect()->back()->with('success', 'Employee data saved successfully!');
 
-        // } catch (\Exception $e) {
-        //     DB::rollBack();
-        //     return redirect()->back()->with('error', 'Failed to save employee data: ' . $e->getMessage());
-        // }
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Failed to save employee data: ' . $e->getMessage());
+        }
     }
 
     public function details($id)

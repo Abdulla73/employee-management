@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class History extends Model
 {
     use HasFactory;
-    protected $table = 'histories';  // Change table name here if it's different
-    protected $fillable = ['empId', 'institute', 'serving_year','position','special_award'];
+    protected $table = 'histories';
+    protected $fillable = ['empId', 'institute', 'position', 'start_date', 'end_date', 'special_award'];
 
 }
