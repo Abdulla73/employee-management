@@ -14,7 +14,7 @@ class EmployeeExport implements FromCollection, WithHeadings, WithMapping
      */
     public function collection()
     {
-        // Fetch employees with their related educations and histories
+
         return Employee::with(['educations', 'histories'])->get();
     }
     public function map($employee): array
