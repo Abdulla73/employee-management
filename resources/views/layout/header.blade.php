@@ -95,7 +95,8 @@
     .form-control::placeholder {
         color: #A9A9A9;
     }
-    .btn-search{
+
+    .btn-search {
         background-color: #FFEB3B;
         color: white;
         border: none;

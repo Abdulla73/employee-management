@@ -114,6 +114,44 @@
             border: 1px dashed #ddd;
             position: relative;
         }
+
+        /* .drop-area {
+            border: 2px dashed #007bff;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            cursor: pointer;
+            background-color: #f9f9f9;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        } */
+
+        /* .drop-area:hover {
+                background-color: #e9e9e9;
+            } */
+
+        /* .preview-container img {
+            max-width: 100px;
+            max-height: 100px;
+            margin-top: 10px;
+            border-radius: 5px;
+        } */
+
+        .drop-zone {
+            width: 100%;
+            padding: 20px;
+            border: 2px dashed #0dacdc;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            color: #333;
+            background-color: #f9f9f9;
+            transition: background-color 0.3s ease;
+        }
+
+        .drop-zone:hover {
+            background-color: #f0f0f0;
+        }
     </style>
 @endsection
 
@@ -148,9 +186,16 @@
                             <input type="text" id="phone" name="phone" required>
                         </div>
                     </div>
+
                     <div class="form-group">
                         <label for="profile_image">Profile Image</label>
-                        <input type="file" id="profile_image" name="profile_image" accept="image/*" required>
+                        <div id="drop-zone" class="drop-zone">
+                            <p>Drag & Drop your profile picture here, or click to upload</p>
+                            <img id="image-preview"
+                                style="display: none; max-width: 100%; max-height: 150px; margin-top: 10px;" />
+                        </div>
+                        <input type="file" id="profile_image" name="profile_image" accept="image/*"
+                            style="display: none;">
                     </div>
                 </div>
 
@@ -333,5 +378,50 @@
                     .catch(error => console.error('Error:', error));
             }
         });
+
+
+
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('profile_image');
+        const imagePreview = document.getElementById('image-preview');
+
+
+        dropZone.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', handleFilePreview);
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.style.backgroundColor = '#e0e0e0';
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.style.backgroundColor = '#f9f9f9';
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.style.backgroundColor = '#f9f9f9';
+
+            const files = e.dataTransfer.files;
+            if (files.length) {
+                fileInput.files = files;
+                handleFilePreview();
+            }
+        });
+
+        function handleFilePreview() {
+            const file = fileInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    imagePreview.src = e.target.result;
+                    imagePreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        }
     </script>
 @endsection

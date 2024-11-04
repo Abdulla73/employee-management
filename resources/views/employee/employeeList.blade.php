@@ -154,8 +154,10 @@
                     <p><strong>Phone:</strong> {{ $employee->phone }}</p>
                     <p><strong>Email:</strong> {{ $employee->email }}</p>
                     <p class="lastp"><strong>Date of Birth:</strong> {{ $employee->dob }}</p>
-                    <button class="editbtn" id="editbtn" data-empid="{{ $employee->id }}" onclick="editDetails({{ $employee->id }})">Edit</button>
-                    <form action="{{ route('employee-panel.employees.delete', $employee->id) }}" method="POST" style="display:inline;">
+                    <button class="editbtn" id="editbtn" data-empid="{{ $employee->id }}"
+                        onclick="editDetails({{ $employee->id }})">Edit</button>
+                    <form action="{{ route('employee-panel.employees.delete', $employee->id) }}" method="POST"
+                        style="display:inline;">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="deletebtn">Delete</button>
@@ -179,6 +181,5 @@
             const url = "{{ route('employee-panel.employees.edit', ':id') }}".replace(':id', id);
             window.location.href = url;
         }
-
     </script>
 @endsection

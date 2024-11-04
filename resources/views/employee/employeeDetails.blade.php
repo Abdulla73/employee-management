@@ -46,11 +46,13 @@
             float: right;
         }
 
-        .education, .history {
+        .education,
+        .history {
             width: 100%;
         }
 
-        .eduhader, .hisheader {
+        .eduhader,
+        .hisheader {
             width: 100%;
             color: #fff;
             text-align: left;
@@ -58,7 +60,8 @@
             margin-left: 16px;
         }
 
-        .edu-details, .histable {
+        .edu-details,
+        .histable {
             width: 100%;
             margin: 2px;
             padding: 10px;
@@ -72,7 +75,8 @@
             margin-bottom: 20px;
         }
 
-        th, td {
+        th,
+        td {
             border: 1px solid #20a9e9;
             padding: 8px;
             text-align: center;
@@ -119,7 +123,8 @@
 
     <div class="cv-container">
         <div class="pdf">
-            <button class="btn-pdf" onclick="download({{ $employee->id }})" data-empid="{{ $employee->id }}">Download pdf</button>
+            <button class="btn-pdf" onclick="download({{ $employee->id }})" data-empid="{{ $employee->id }}">Download
+                pdf</button>
         </div>
         <div class="basic">
             <div class="basicinfo">
@@ -187,7 +192,9 @@
                                     <td>
                                         @php
                                             $start = Carbon::parse($history->start_date);
-                                            $end = $history->end_date ? Carbon::parse($history->end_date) : Carbon::now();
+                                            $end = $history->end_date
+                                                ? Carbon::parse($history->end_date)
+                                                : Carbon::now();
                                             $duration = $start->diffInDays($end);
                                         @endphp
                                         {{ $history->end_date ? $duration . ' Days' : 'Currently Working' }}

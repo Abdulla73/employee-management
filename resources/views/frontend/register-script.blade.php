@@ -1,5 +1,3 @@
-
-
 <script>
     $('#registration-form').on('submit', function(event) {
         event.preventDefault();
@@ -35,10 +33,10 @@
                 if (res.success) {
                     alert('Registration successful!');
                     $.get('/', function(data) {
-                    $('.container').html(data);
+                        $('.container').html(data);
 
-                    window.history.pushState({}, '', '/');
-                });
+                        window.history.pushState({}, '', '/');
+                    });
                 }
             },
             error: function(res) {

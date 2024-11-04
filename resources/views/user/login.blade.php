@@ -20,4 +20,3 @@
         <div class="image-section"></div>
     </div>
 @endsection
-
