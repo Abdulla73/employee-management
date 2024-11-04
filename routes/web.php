@@ -29,6 +29,7 @@ Route::group(['prefix' => 'employee-panel', 'as' => 'employee-panel.'], function
         Route::post('/check-email', [EmployeeController::class, 'checkEmail'])->name('check.email');
         Route::get('/download-pdf/{id}', [EmployeeController::class, 'downloadPDF'])->name('download.pdf');
         Route::get('/pdfview/{id}', [EmployeeController::class, 'pdfview'])->name('pdfview');
+        Route::get('/download/excel', [EmployeeController::class,'exportDataInExcel'])->name('download.excel');
     });
 
     // users

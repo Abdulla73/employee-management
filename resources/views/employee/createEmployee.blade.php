@@ -115,28 +115,6 @@
             position: relative;
         }
 
-        /* .drop-area {
-            border: 2px dashed #007bff;
-            padding: 20px;
-            text-align: center;
-            border-radius: 10px;
-            cursor: pointer;
-            background-color: #f9f9f9;
-            margin-top: 10px;
-            transition: background-color 0.3s;
-        } */
-
-        /* .drop-area:hover {
-                background-color: #e9e9e9;
-            } */
-
-        /* .preview-container img {
-            max-width: 100px;
-            max-height: 100px;
-            margin-top: 10px;
-            border-radius: 5px;
-        } */
-
         .drop-zone {
             width: 100%;
             padding: 20px;

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\EmployeeExport;
 use App\Models\Education;
 use App\Models\employee;
 use App\Models\History;
@@ -10,6 +11,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
+
 
 class EmployeeController extends Controller
 {
@@ -281,4 +284,12 @@ class EmployeeController extends Controller
 
         return view('employee.employeePdf', compact('employee'));
     }
+
+    public function exportDataInExcel(Request $request)
+    {
+        $fileExt = 'xlsx';
+        $filename = "Employees-" . date('d-m-Y') . "." . $fileExt;
+        return Excel::download(new EmployeeExport, $filename);
+    }
+
 }

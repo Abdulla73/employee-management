@@ -138,11 +138,24 @@
             /* border: 1px solid #ccc;  */
             /* border-radius: 4px;  */
         }
+
+        .excelbtn{
+            background-color: #0babf0;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            /* position: absolute; */
+            right: 30px;
+            bottom: 30px;
+        }
     </style>
 @endsection
 
 @section('content')
     <div class="content">
+        <button class="excelbtn" onclick="downloadexcel()">Download Excel</button>
         <a href="{{ route('employee-panel.employees.add-employee') }}" class="addbtn">Add Employee</a>
         <h2 class="header">Employee List</h2>
         @foreach ($employees as $employee)
@@ -179,6 +192,11 @@
 
         function editDetails(id) {
             const url = "{{ route('employee-panel.employees.edit', ':id') }}".replace(':id', id);
+            window.location.href = url;
+        }
+
+        function downloadexcel() {
+            const url = "{{ route('employee-panel.employees.download.excel') }}";
             window.location.href = url;
         }
     </script>

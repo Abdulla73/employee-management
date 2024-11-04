@@ -171,7 +171,7 @@
                             <img id="image-preview"
                                 style="display: none; max-width: 100%; max-height: 150px; margin-top: 10px;" />
                         </div>
-                        <input type="file" id="profile_image" value="{{ $employee->profile_image }}" name="profile_image"
+                        <input type="file" id="profile_image" name="profile_image"
                             accept="image/*" style="display: none;">
                     </div>
                 </div>
